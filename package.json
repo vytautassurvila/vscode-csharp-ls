@@ -10,14 +10,15 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onCommand: vscode-csharp-ls.selectSolution",
+		"workspaceContains:**/*.{sln}"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-csharp-ls.helloWorld",
-				"title": "Hello World"
+				"command": "vscode-csharp-ls.selectSolution",
+				"title": "csharp-ls: Select solution or project"
 			}
 		],
 		"configuration": {
