@@ -11,11 +11,12 @@ import {
 	ServerOptions,
 } from 'vscode-languageclient/node';
 
+import { installCSharpLsIfNotAlready } from "./utils/CSharpLsInstaller";
+
 let client: LanguageClient;
 
-export function activate(context: ExtensionContext) {
-	console.log('Congratulations, your extension "vscode-csharp-ls" is now active!');
-
+export async function activate(context: ExtensionContext) {
+	const csharpLsExecutable = await installCSharpLsIfNotAlready(context.extensionPath, '0.3.0');
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -29,19 +30,12 @@ export function activate(context: ExtensionContext) {
 	context.subscriptions.push(disposable);
 
 
-
-
-
-	const serverModule = 'csharp-ls';
-		//context.asAbsolutePath(path.join('server', 'out', 'server.js'));
-
 	const serverOptions: ServerOptions = {
-		run: { command: serverModule },
-		debug: { command: serverModule },
+		run: csharpLsExecutable,
+		debug: csharpLsExecutable,
 	};
 
 	const clientOptions: LanguageClientOptions = {
-		// if second selecter defined then it fully stops working. Need to figure how to enable it for razor
 		documentSelector: [{ scheme: 'file', language: 'csharp' }],
 		synchronize: {
 			fileEvents: workspace.createFileSystemWatcher('**/.{cs,csproj}')
