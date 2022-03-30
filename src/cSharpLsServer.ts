@@ -50,26 +50,26 @@ export async function startCSharpLsServer(
         },
     };
 
-	const serverOptions: ServerOptions = {
-		run: csharpLsExecutable,
-		debug: csharpLsExecutable,
-	};
+    const serverOptions: ServerOptions = {
+        run: csharpLsExecutable,
+        debug: csharpLsExecutable,
+    };
 
-	const clientOptions: LanguageClientOptions = {
-		documentSelector: [{ scheme: 'file', language: 'csharp' }],
-		synchronize: {
-			fileEvents: workspace.createFileSystemWatcher('**/.{cs,csproj}')
-		}
-	};
+    const clientOptions: LanguageClientOptions = {
+        documentSelector: [{ scheme: 'file', language: 'csharp' }],
+        synchronize: {
+            fileEvents: workspace.createFileSystemWatcher('**/.{cs,csproj}')
+        }
+    };
 
-	client = new LanguageClient(
-		'csharp-ls',
-		'CSharp Language Server',
-		serverOptions,
-		clientOptions
-	);
+    client = new LanguageClient(
+        'csharp-ls',
+        'CSharp Language Server',
+        serverOptions,
+        clientOptions
+    );
 
-	client.start();
+    client.start();
 }
 
 export async function stopCSharpLsServer(): Promise<void> {

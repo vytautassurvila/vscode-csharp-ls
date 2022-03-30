@@ -25,10 +25,10 @@
 			"type": "object",
 			"title": "Example configuration",
 			"properties": {
-				"csharp-ls.LogLevel": {
+				"csharp-ls.logLevel": {
 					"scope": "window",
 					"type": "string",
-					"default": "Log",
+					"default": "Warning",
 					"description": "Verbosity level for csharp-ls server",
 					"enum": [
 						"Error",
