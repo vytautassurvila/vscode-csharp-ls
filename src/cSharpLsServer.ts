@@ -1,6 +1,6 @@
 import { existsSync } from 'fs';
 import * as path from 'path';
-import { mkdir, writeFile } from 'fs/promises';
+import { mkdir } from 'fs/promises';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
 import { ExtensionContext, workspace } from 'vscode';
@@ -15,31 +15,33 @@ export async function startCSharpLsServer(
     await stopCSharpLsServer();
 
     const csharpLsRootPath = path.resolve(extensionPath, `.csharp-ls.${csharpLsVersion}`);
-    const toolsConfigPath = path.resolve(csharpLsRootPath, '.config/dotnet-tools.json');
 
-    if (!existsSync(toolsConfigPath)) {
+    if (!existsSync(csharpLsRootPath)) {
+        await mkdir(csharpLsRootPath, { recursive: true });
+    }
 
-        const toolsDirectory = path.dirname(toolsConfigPath);
+    const toolListOutput = await shellExec('dotnet', ['tool', 'list', '--local'], csharpLsRootPath);
 
-        if (!existsSync(toolsDirectory)) {
-            await mkdir(toolsDirectory, { recursive: true });
+    if (!toolListOutput || !toolListOutput.includes('csharp-ls')) {
+        await shellExec('dotnet', ['new', 'tool-manifest'], csharpLsRootPath);
+
+        const installArgs = [
+            'tool',
+            'install',
+            'csharp-ls',
+            '--local',
+            '--version',
+            csharpLsVersion,
+        ];
+
+        const localNupkgdir = workspace.getConfiguration('csharp-ls').get('dev.local-nupkg-dir') as string;
+
+        if (localNupkgdir) {
+            installArgs.push('--add-source');
+            installArgs.push(localNupkgdir);
         }
 
-        await writeFile(toolsConfigPath,
-            `{
-                "version": 1,
-                "isRoot": true,
-                "tools": {
-                    "csharp-ls": {
-                        "version": "${csharpLsVersion}",
-                        "commands": [
-                        "csharp-ls"
-                        ]
-                    }
-                }
-            }`);
-
-        await shellExec('dotnet', ['tool', 'restore'], csharpLsRootPath);
+        await shellExec('dotnet', installArgs, csharpLsRootPath);
     }
 
     const csharpLsExecutable = {
@@ -115,8 +117,8 @@ function shellExec(command: string, args: string[], cwd: string): Promise<string
             return resolve(undefined);
         }
 
-        childprocess.on('error', function (error: any) {
-            console.error('shellExec', command, args, cwd, error);
+        childprocess.stderr!.on('data', function (error: any) {
+            console.error('spawn', command, args, cwd, error.toString());
             resolve(undefined);
         });
 

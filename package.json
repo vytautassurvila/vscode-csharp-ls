@@ -2,7 +2,7 @@
 	"name": "vscode-csharp-ls",
 	"displayName": "vscode-csharp-ls",
 	"description": "C# Language Server",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.63.0"
 	},
@@ -62,6 +62,12 @@
 							"default": "json"
 						}
 					}
+				},
+				"csharp-ls.dev.local-nupkg-dir": {
+					"scope": "window",
+					"type": "string",
+					"default": "",
+					"description": "Local nupgk directory for csharp-ls. To be used for testing not yet released csharp-ls version"
 				}
 			}
 		}
