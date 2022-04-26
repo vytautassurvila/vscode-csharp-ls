@@ -2,7 +2,7 @@
 	"name": "vscode-csharp-ls",
 	"displayName": "vscode-csharp-ls",
 	"description": "C# Language Server",
-	"version": "0.0.3",
+	"version": "0.0.5",
 	"engines": {
 		"vscode": "^1.63.0"
 	},
