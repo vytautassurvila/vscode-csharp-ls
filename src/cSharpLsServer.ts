@@ -106,15 +106,13 @@ export async function autostartCSharpLsServer(context: ExtensionContext): Promis
         return;
     }
 
-    const message = targetSolutions.length > 1
-        ? 'More than one solution detected'
-        : 'No solution files found';
+    if (targetSolutions.length > 1) {
+        const selectSolution = await window.showInformationMessage('More than one solution detected', 'Select solution');
 
-    const selectSolution = await window.showInformationMessage(message, "Select solution");
-
-    if (selectSolution) {
-        commands.executeCommand('vscode-csharp-ls.selectSolution');
-        return;
+        if (selectSolution) {
+            commands.executeCommand('vscode-csharp-ls.selectSolution');
+            return;
+        }
     }
 }
 
