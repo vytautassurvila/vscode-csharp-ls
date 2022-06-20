@@ -8,7 +8,9 @@ See [csharp-language-server Features](https://github.com/razzmatazz/csharp-langu
 
 ## Requirements
 
-This extension requires that the .NET 6 SDK be installed and on path for Visual Studio Code
+This extension requires that the .NET 6 SDK be installed and on path for Visual Studio Code.
+
+At the moment extension can be installed only by building it from source `npm install &&  npm run build` and then _Install from VSIX..._
 
 ## Extension Settings
 

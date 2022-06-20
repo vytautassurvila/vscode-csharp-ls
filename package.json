@@ -1,13 +1,19 @@
 {
-	"name": "vscode-csharp-ls",
-	"displayName": "vscode-csharp-ls",
+	"name": "csharp-ls",
+	"displayName": "C# LSP client for csharp-language-server",
 	"description": "C# Language Server",
-	"version": "0.0.6",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vytautassurvila/vscode-csharp-ls.git"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/vytautassurvila/vscode-csharp-ls/blob/main/README.md",
+	"version": "0.0.7",
 	"engines": {
 		"vscode": "^1.63.0"
 	},
 	"categories": [
-		"Other"
+		"Programming Languages"
 	],
 	"activationEvents": [
 		"onCommand: vscode-csharp-ls.selectSolution",
