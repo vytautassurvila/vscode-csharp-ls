@@ -3,7 +3,7 @@ import * as path from 'path';
 import { mkdir } from 'fs/promises';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
-import { ExtensionContext, workspace } from 'vscode';
+import { ExtensionContext, workspace, window, commands } from 'vscode';
 import { csharpLsVersion } from './constants/csharpLsVersion';
 
 let client: LanguageClient | undefined = undefined;
@@ -103,6 +103,17 @@ export async function autostartCSharpLsServer(context: ExtensionContext): Promis
 
     if (targetSolutions.length === 1) {
         await startCSharpLsServer(context.extensionPath, targetSolutions[0]);
+        return;
+    }
+
+    const message = targetSolutions.length > 1
+        ? 'More than one solution detected'
+        : 'No solution files found';
+
+    const selectSolution = await window.showInformationMessage(message, "Select solution");
+
+    if (selectSolution) {
+        commands.executeCommand('vscode-csharp-ls.selectSolution');
         return;
     }
 }

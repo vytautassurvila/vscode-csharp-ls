@@ -18,5 +18,4 @@ This extension contributes the following settings:
 
 ## Known Issues
 
-* vscode default autocomplete quite often kicks in before vscode-csharp-ls autocomplete. One should close it and request autocomplete again
-* decomplication is missing. Should be implemented in similar manner https://github.com/razzmatazz/csharp-language-server/issues/21
+* decomplication is missing. Could be implemented in similar manner https://github.com/razzmatazz/csharp-language-server/issues/21
