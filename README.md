@@ -4,10 +4,12 @@ Visual Studio Code C# LSP client for [csharp-language-server](https://github.com
 
 ## Features
 
-TODO:
+See [csharp-language-server Features](https://github.com/razzmatazz/csharp-language-server#features)
+
 ## Requirements
 
 This extension requires that the .NET 6 SDK be installed and on path for Visual Studio Code
+
 ## Extension Settings
 
 This extension contributes the following settings:
