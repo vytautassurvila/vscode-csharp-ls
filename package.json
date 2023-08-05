@@ -69,11 +69,11 @@
 						}
 					}
 				},
-				"csharp-ls.dev.local-nupkg-dir": {
+				"csharp-ls.dev.csharp-ls-executable": {
 					"scope": "window",
 					"type": "string",
 					"default": "",
-					"description": "Local nupgk directory for csharp-ls. To be used for testing not yet released csharp-ls version"
+					"description": "Executable path to local csharp-ls. To be used for testing not released csharp-ls version. Example: 'dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll'"
 				}
 			}
 		}

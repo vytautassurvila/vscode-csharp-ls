@@ -14,40 +14,16 @@ export async function startCSharpLsServer(
 ): Promise<void> {
     await stopCSharpLsServer();
 
-    const csharpLsRootPath = path.resolve(extensionPath, `.csharp-ls.${csharpLsVersion}`);
+    const csharpLsBinaryPath = await resolveCsharpLsBinaryPath(extensionPath);
 
-    if (!existsSync(csharpLsRootPath)) {
-        await mkdir(csharpLsRootPath, { recursive: true });
-    }
-
-    const toolListOutput = await shellExec('dotnet', ['tool', 'list', '--local'], csharpLsRootPath);
-
-    if (!toolListOutput || !toolListOutput.includes('csharp-ls')) {
-        await shellExec('dotnet', ['new', 'tool-manifest'], csharpLsRootPath);
-
-        const installArgs = [
-            'tool',
-            'install',
-            'csharp-ls',
-            '--local',
-            '--version',
-            csharpLsVersion,
-        ];
-
-        const localNupkgdir = workspace.getConfiguration('csharp-ls').get('dev.local-nupkg-dir') as string;
-
-        if (localNupkgdir) {
-            installArgs.push('--add-source');
-            installArgs.push(localNupkgdir);
-        }
-
-        await shellExec('dotnet', installArgs, csharpLsRootPath);
-    }
+    const slnWorkspaceFolder = workspace.workspaceFolders?.find(f => solutionPath.startsWith(f.uri.fsPath));
+    const rootPath = slnWorkspaceFolder?.uri.fsPath ?? workspace.rootPath ?? '';
+    const relativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
 
     const csharpLsExecutable = {
-        command: `dotnet tool run csharp-ls -- --solution "${solutionPath}"`,
+        command: `${csharpLsBinaryPath} --solution ${relativeSolutionPath}`,
         options: {
-            cwd: csharpLsRootPath,
+            cwd: rootPath,
             shell: true,
         },
     };
@@ -88,7 +64,7 @@ export async function getTargetSolutionPaths(): Promise<string[]> {
         '{**/*.sln}',
         '{**/node_modules/**,**/.git/**}');
 
-    return solutionFiles.map(f => f.fsPath);
+    return solutionFiles.map(f => f.path);
 }
 
 export async function autostartCSharpLsServer(context: ExtensionContext): Promise<void> {
@@ -123,6 +99,7 @@ function shellExec(command: string, args: string[], cwd: string): Promise<string
             childprocess = spawn(command, args, { cwd });
         }
         catch (e) {
+            console.error(`shellExec: '${command}' error: '${e}'`);
             return resolve(undefined);
         }
 
@@ -140,4 +117,35 @@ function shellExec(command: string, args: string[], cwd: string): Promise<string
             resolve(stdout);
         });
     });
+}
+
+async function resolveCsharpLsBinaryPath(extensionPath: string,) {
+    const devCsharpLsBinaryPath = workspace.getConfiguration('csharp-ls').get('dev.csharp-ls-executable') as string;
+
+    if (devCsharpLsBinaryPath) {
+        return devCsharpLsBinaryPath;
+    }
+
+    const csharpLsRootPath = path.resolve(extensionPath, `.csharp-ls.${csharpLsVersion}`);
+
+    if (!existsSync(csharpLsRootPath)) {
+        await mkdir(csharpLsRootPath, { recursive: true });
+    }
+
+    const csharpLsBinaryPath = path.resolve(csharpLsRootPath, 'csharp-ls');
+
+    if (!existsSync(csharpLsBinaryPath)) {
+
+        const installArgs = [
+            'tool',
+            'install',
+            'csharp-ls',
+            '--tool-path', csharpLsRootPath,
+            '--version', csharpLsVersion,
+        ];
+
+        await shellExec('dotnet', installArgs, csharpLsRootPath);
+    }
+
+    return csharpLsBinaryPath;
 }
