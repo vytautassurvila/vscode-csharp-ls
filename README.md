@@ -19,7 +19,3 @@ This extension contributes the following settings:
 * `csharp-ls.logLevel`: verbosity level for csharp-ls server
 * `csharp-ls.trace.server`: traces the communication between VS Code and the language server.
 * `csharp-ls.dev.csharp-ls-executable`: Executable path to local csharp-ls. To be used for testing not released csharp-ls version. Example: `dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll`
-
-## Known Issues
-
-* decomplication is missing. Could be implemented in similar manner https://github.com/razzmatazz/csharp-language-server/issues/21

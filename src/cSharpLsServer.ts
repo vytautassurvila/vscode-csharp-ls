@@ -3,7 +3,7 @@ import * as path from 'path';
 import { mkdir } from 'fs/promises';
 import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
-import { ExtensionContext, workspace, window, commands } from 'vscode';
+import { ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri } from 'vscode';
 import { csharpLsVersion } from './constants/csharpLsVersion';
 
 let client: LanguageClient | undefined = undefined;
@@ -46,6 +46,8 @@ export async function startCSharpLsServer(
         serverOptions,
         clientOptions
     );
+
+    registerTextdocumentContentProviders();
 
     client.start();
 }
@@ -148,4 +150,27 @@ async function resolveCsharpLsBinaryPath(extensionPath: string,) {
     }
 
     return csharpLsBinaryPath;
+}
+
+function registerTextdocumentContentProviders() {
+    interface CSharpMetadataResponse {
+        projectName: string;
+        assemblyName: string;
+        symbolName: string;
+        source: string;
+    }
+
+    const csharpMetadataProvider = new (class implements TextDocumentContentProvider {
+        async provideTextDocumentContent(uri: Uri): Promise<string> {
+            const response = await client?.sendRequest<CSharpMetadataResponse>('csharp/metadata', {
+                textDocument: {
+                    uri: uri.toString(),
+                }
+            });
+
+            return response?.source ?? '';
+        }
+      })();
+
+    workspace.registerTextDocumentContentProvider('csharp', csharpMetadataProvider);
 }
