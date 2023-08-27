@@ -1,14 +1,15 @@
 {
 	"name": "csharp-ls",
-	"displayName": "C# LSP client for csharp-language-server",
-	"description": "C# Language Server",
+	"displayName": "csharp-ls",
+	"description": "C# LSP client for csharp-language-server",
+	"publisher": "vytautassurvila",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/vytautassurvila/vscode-csharp-ls.git"
+		"url": "https://github.com/vytautassurvila/vscode-csharp-ls"
 	},
 	"license": "MIT",
-	"homepage": "https://github.com/vytautassurvila/vscode-csharp-ls/blob/main/README.md",
-	"version": "0.0.17",
+	"version": "0.0.18",
+	"pricing": "Free",
 	"engines": {
 		"vscode": "^1.80.0"
 	},
@@ -16,14 +17,15 @@
 		"Programming Languages"
 	],
 	"activationEvents": [
-		"onCommand: vscode-csharp-ls.selectSolution",
-		"workspaceContains:**/*.{sln}"
+		"onCommand: csharp-ls.selectSolution",
+		"workspaceContains:**/*.{sln}",
+		"onLanguage:csharp"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vscode-csharp-ls.selectSolution",
+				"command": "csharp-ls.selectSolution",
 				"title": "csharp-ls: Select solution or project"
 			}
 		],
@@ -31,22 +33,10 @@
 			"type": "object",
 			"title": "Example configuration",
 			"properties": {
-				"csharp-ls.logLevel": {
-					"scope": "window",
-					"type": "string",
-					"default": "Warning",
-					"description": "Verbosity level for csharp-ls server",
-					"enum": [
-						"Error",
-						"Warning",
-						"Info",
-						"Log"
-					]
-				},
 				"csharp-ls.trace.server": {
 					"scope": "window",
 					"type": "object",
-					"description": "Traces the communication between VS Code and the language server.",
+					"description": "Traces the communication between VS Code and the language server. Trace can be seen in `Output` -> `csharp-ls`",
 					"properties": {
 						"verbosity": {
 							"type": "string",
@@ -69,11 +59,11 @@
 						}
 					}
 				},
-				"csharp-ls.dev.csharp-ls-executable": {
+				"csharp-ls.csharp-ls-executable": {
 					"scope": "window",
 					"type": "string",
 					"default": "",
-					"description": "Executable path to local csharp-ls. To be used for testing not released csharp-ls version. Example: 'dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll'"
+					"description": "Executable path to local csharp-ls. To be used for testing not released csharp-ls version (example: `dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll`). It also can be used for globally installed language server via `dotnet tool install --global csharp-ls` (example: `csharp-ls`)."
 				}
 			}
 		}

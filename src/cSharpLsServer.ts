@@ -42,12 +42,12 @@ export async function startCSharpLsServer(
 
     client = new LanguageClient(
         'csharp-ls',
-        'CSharp Language Server',
+        'csharp-ls',
         serverOptions,
         clientOptions
     );
 
-    registerTextdocumentContentProviders();
+    registerTextDocumentContentProviders();
 
     client.start();
 }
@@ -88,7 +88,7 @@ export async function autostartCSharpLsServer(context: ExtensionContext): Promis
         const selectSolution = await window.showInformationMessage('More than one solution detected', 'Select solution');
 
         if (selectSolution) {
-            commands.executeCommand('vscode-csharp-ls.selectSolution');
+            commands.executeCommand('csharp-ls.selectSolution');
             return;
         }
     }
@@ -152,7 +152,7 @@ async function resolveCsharpLsBinaryPath(extensionPath: string,) {
     return csharpLsBinaryPath;
 }
 
-function registerTextdocumentContentProviders() {
+function registerTextDocumentContentProviders() {
     interface CSharpMetadataResponse {
         projectName: string;
         assemblyName: string;

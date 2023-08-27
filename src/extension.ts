@@ -7,7 +7,7 @@ import { autostartCSharpLsServer, stopCSharpLsServer } from "./cSharpLsServer";
 
 export async function activate(context: ExtensionContext) {
     const disposable = commands
-        .registerCommand('vscode-csharp-ls.selectSolution', () => selectSolutionCommand(context));
+        .registerCommand('csharp-ls.selectSolution', () => selectSolutionCommand(context));
 
     context.subscriptions.push(disposable);
 
