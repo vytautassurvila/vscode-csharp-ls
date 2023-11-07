@@ -1,3 +1,6 @@
+# [0.0.19]
+- [csharp-ls@0.10.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.10.0)
+
 # [0.0.18]
 - [csharp-ls@0.9.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.9.0)
 - "Go to definition" to decompiled metadata
