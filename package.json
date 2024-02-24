@@ -31,7 +31,7 @@
 		],
 		"configuration": {
 			"type": "object",
-			"title": "Example configuration",
+			"title": "csharp-ls",
 			"properties": {
 				"csharp-ls.trace.server": {
 					"scope": "window",
