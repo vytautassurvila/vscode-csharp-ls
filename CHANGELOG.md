@@ -1,6 +1,7 @@
-# [Unreleased]
-- Make sure `csharp-ls.csharp-ls-executable` setting is actually taken into account.
-- [csharp-ls@0.11.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.11.0)
+# [0.0.20]
+- Make sure `csharp-ls.csharp-ls-executable` setting is actually taken into account (@razzmatazz).
+- [csharp-ls@0.11.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.11.0). From now on NET 8 SDK is required. (@razzmatazz)
+- improve error messages when dotnet is not found or version is not supported
 
 # [0.0.19]
 - [csharp-ls@0.10.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.10.0)
