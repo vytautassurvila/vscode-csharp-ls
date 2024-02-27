@@ -14,6 +14,8 @@ export async function startCSharpLsServer(
 ): Promise<void> {
     await stopCSharpLsServer();
 
+    await ensureWeHaveDotnet();
+
     const csharpLsBinaryPath = await resolveCsharpLsBinaryPath(extensionPath);
 
     const slnWorkspaceFolder = workspace.workspaceFolders?.find(f => solutionPath.startsWith(f.uri.fsPath));
@@ -102,12 +104,12 @@ function shellExec(command: string, args: string[], cwd: string): Promise<string
         }
         catch (e) {
             console.error(`shellExec: '${command}' error: '${e}'`);
-            return resolve(undefined);
+            return reject(String(e));
         }
 
         childprocess.stderr!.on('data', function (error: any) {
             console.error('spawn', command, args, cwd, error.toString());
-            resolve(undefined);
+            reject(error.toString());
         });
 
         let stdout = '';
@@ -119,6 +121,32 @@ function shellExec(command: string, args: string[], cwd: string): Promise<string
             resolve(stdout);
         });
     });
+}
+
+async function ensureWeHaveDotnet() {
+    let dotnetVersion = '';
+
+    try {
+        dotnetVersion = await shellExec('dotnet', ['--version'], '') ?? '';
+    }
+    catch (e) {
+        console.error(`Failed to get dotnet version: ${e}`);
+    }
+
+    if (!dotnetVersion) {
+        throw new Error('Failed to get dotnet version. Make sure dotnet is installed and in vscode PATH');
+    }
+
+    const dotnetVersionParts = dotnetVersion.split('.');
+    const majorVersion = parseInt(dotnetVersionParts[0]);
+
+    if (isNaN(majorVersion)) {
+        throw new Error(`Failed to parse dotnet version: ${dotnetVersion}`);
+    }
+
+    if (majorVersion < 8) {
+        throw new Error(`csharp-ls requires dotnet version 8.0 or higher. Current version is ${dotnetVersion}`);
+    }
 }
 
 async function resolveCsharpLsBinaryPath(extensionPath: string,) {
@@ -146,7 +174,13 @@ async function resolveCsharpLsBinaryPath(extensionPath: string,) {
             '--version', csharpLsVersion,
         ];
 
-        await shellExec('dotnet', installArgs, csharpLsRootPath);
+        try {
+            await shellExec('dotnet', installArgs, csharpLsRootPath);
+        }
+        catch (e) {
+            window.showErrorMessage(`Failed to install csharp-ls: ${e}`);
+            throw new Error('Failed to install csharp-ls');
+        }
     }
 
     return csharpLsBinaryPath;
