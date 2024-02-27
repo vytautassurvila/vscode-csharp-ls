@@ -1,1 +1,1 @@
-export const csharpLsVersion = '0.10.0';
+export const csharpLsVersion = '0.11.0';
