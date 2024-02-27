@@ -122,7 +122,7 @@ function shellExec(command: string, args: string[], cwd: string): Promise<string
 }
 
 async function resolveCsharpLsBinaryPath(extensionPath: string,) {
-    const devCsharpLsBinaryPath = workspace.getConfiguration('csharp-ls').get('dev.csharp-ls-executable') as string;
+    const devCsharpLsBinaryPath = workspace.getConfiguration('csharp-ls').get('csharp-ls-executable') as string;
 
     if (devCsharpLsBinaryPath) {
         return devCsharpLsBinaryPath;
