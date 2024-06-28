@@ -1,3 +1,6 @@
+# [0.0.22]
+- [csharp-ls@0.14.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.14.0)
+
 # [0.0.21]
 - [csharp-ls@0.13.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.13.0)
 
