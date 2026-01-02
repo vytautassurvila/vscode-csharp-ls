@@ -8,11 +8,11 @@ Visual Studio Code already has a great extension for [C#](https://marketplace.vi
 
 ## Features
 
-See [csharp-language-server Features](https://github.com/razzmatazz/csharp-language-server#features)
+See [csharp-language-server Features](https://github.com/razzmatazz/csharp-language-server/blob/main/FEATURES.md)
 
 ## Requirements
 
-This extension requires that the .NET 9 (or greater) SDK be installed and on path for Visual Studio Code.
+This extension requires that the .NET 10 (or greater) SDK be installed and on path for Visual Studio Code.
 
 ## Usage
 
