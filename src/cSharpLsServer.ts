@@ -207,11 +207,13 @@ function registerTextDocumentContentProviders() {
 
     const csharpMetadataProvider = new (class implements TextDocumentContentProvider {
         async provideTextDocumentContent(uri: Uri): Promise<string> {
-            const response = await client?.sendRequest<CSharpMetadataResponse>('csharp/metadata', {
+            const request = {
                 textDocument: {
-                    uri: uri.toString(),
+                    uri: uri.toString(true) // skipEncoding=true
                 }
-            });
+            };
+
+            const response = await client?.sendRequest<CSharpMetadataResponse>('csharp/metadata', request);
 
             return response?.source ?? '';
         }
