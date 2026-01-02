@@ -3,7 +3,7 @@ import * as path from 'path';
 import { mkdir } from 'fs/promises';
 import { LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
-import { ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri } from 'vscode';
+import { ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri, languages } from 'vscode';
 import { csharpLsVersion } from './constants/csharpLsVersion';
 
 let client: LanguageClient | undefined = undefined;
@@ -220,4 +220,10 @@ function registerTextDocumentContentProviders() {
       })();
 
     workspace.registerTextDocumentContentProvider('csharp', csharpMetadataProvider);
+
+    workspace.onDidOpenTextDocument(async (document) => {
+        if (document.uri.scheme === 'csharp') {
+            await languages.setTextDocumentLanguage(document, 'csharp');
+        }
+    });
 }
