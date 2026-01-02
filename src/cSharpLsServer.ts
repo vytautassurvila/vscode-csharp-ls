@@ -1,12 +1,22 @@
 import { existsSync } from 'fs';
 import * as path from 'path';
 import { mkdir } from 'fs/promises';
-import { LanguageClient, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
+import { LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
 import { ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri } from 'vscode';
 import { csharpLsVersion } from './constants/csharpLsVersion';
 
 let client: LanguageClient | undefined = undefined;
+
+class MetadataUriFeature implements StaticFeature {
+    fillClientCapabilities(capabilities: ClientCapabilities): void {
+        capabilities.experimental = capabilities.experimental || {};
+        capabilities.experimental.csharp = capabilities.experimental.csharp || {};
+        capabilities.experimental.csharp.metadataUris = true;
+    }
+    initialize(): void {}
+    dispose(): void {}
+}
 
 export async function startCSharpLsServer(
     extensionPath: string,
@@ -51,6 +61,7 @@ export async function startCSharpLsServer(
 
     registerTextDocumentContentProviders();
 
+    client.registerFeature(new MetadataUriFeature());
     client.start();
 }
 
