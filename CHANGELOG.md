@@ -1,5 +1,10 @@
+# [0.0.29]
+- Reenable metadata uris (@razzmatazz)
+- [csharp-ls@0.21.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.21.0). From now on NET 10 SDK is required.
+
 # [0.0.28]
 - [csharp-ls@0.20.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.20.0)
+
 # [0.0.27]
 - [csharp-ls@0.19.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.19.0)
 
