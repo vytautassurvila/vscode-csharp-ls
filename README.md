@@ -25,3 +25,30 @@ This extension contributes the following settings:
 * `csharp-ls.trace.server`: traces the communication between VS Code and the language server.
 * `csharp-ls.csharp-ls-executable`: Executable path to local csharp-ls. To be used for testing not released csharp-ls version (value: `dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll`). It also can be used for globally installed server via `dotnet tool install --global csharp-ls` (value: `csharp-ls`).
 * `csharp-ls.razor-support`: Enable experimental Razor support for `.cshtml` files. Default is `false`.
+
+## Building from Source
+
+To build the VSIX package for this extension:
+
+1. **Install dependencies** (if you haven't already):
+   ```bash
+   npm install
+   ```
+
+2. **Build the VSIX package**:
+   ```bash
+   npm run build
+   ```
+
+   Or directly:
+   ```bash
+   vsce package
+   ```
+
+This will create a `.vsix` file (e.g., `csharp-ls-0.0.29.vsix`) in the root directory.
+
+### Installing the VSIX
+
+Once built, you can install it via:
+- **Command line**: `code --install-extension csharp-ls-0.0.29.vsix`
+- **VS Code UI**: Extensions → `...` menu → "Install from VSIX..."
