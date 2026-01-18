@@ -64,6 +64,12 @@
 					"type": "string",
 					"default": "",
 					"description": "Executable path to local csharp-ls. To be used for testing not released csharp-ls version (example: `dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll`). It also can be used for globally installed language server via `dotnet tool install --global csharp-ls` (example: `csharp-ls`)."
+				},
+				"csharp-ls.razor-support": {
+					"scope": "window",
+					"type": "boolean",
+					"default": false,
+					"description": "Enable Razor support in the language server. When enabled, the server will provide language features for .cshtml files."
 				}
 			}
 		}

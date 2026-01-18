@@ -24,3 +24,4 @@ This extension contributes the following settings:
 
 * `csharp-ls.trace.server`: traces the communication between VS Code and the language server.
 * `csharp-ls.csharp-ls-executable`: Executable path to local csharp-ls. To be used for testing not released csharp-ls version (value: `dotnet /home/user/.../Debug/net7.0/CSharpLanguageServer.dll`). It also can be used for globally installed server via `dotnet tool install --global csharp-ls` (value: `csharp-ls`).
+* `csharp-ls.razor-support`: Enable experimental Razor support for `.cshtml` files. Default is `false`.

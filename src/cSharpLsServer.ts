@@ -32,8 +32,16 @@ export async function startCSharpLsServer(
     const rootPath = slnWorkspaceFolder?.uri.fsPath ?? workspace.rootPath ?? '';
     const relativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
 
+    // Build features flag
+    const features: string[] = [];
+    const razorSupport = workspace.getConfiguration('csharp-ls').get('razor-support') as boolean;
+    if (razorSupport) {
+        features.push('razor-support');
+    }
+    const featuresFlag = features.length > 0 ? `--features ${features.join(',')}` : '';
+
     const csharpLsExecutable = {
-        command: `${csharpLsBinaryPath} --solution ${relativeSolutionPath}`,
+        command: `${csharpLsBinaryPath} --solution ${relativeSolutionPath} ${featuresFlag}`,
         options: {
             cwd: rootPath,
             shell: true,
