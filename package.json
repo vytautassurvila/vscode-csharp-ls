@@ -69,7 +69,7 @@
 					"scope": "window",
 					"type": "boolean",
 					"default": false,
-					"description": "Enable Razor support in the language server. When enabled, the server will provide language features for .cshtml files."
+					"description": "Enable (experimental) Razor support in the language server. When enabled, the server will provide language features for .cshtml files."
 				}
 			}
 		}
