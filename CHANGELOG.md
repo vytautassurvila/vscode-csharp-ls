@@ -1,3 +1,7 @@
+# Unreleased
+- Add user setting to enable support for .cshtml (razor) files (@razzmatazz)
+- Add instruction to build and install the extension from source (@razzmatazz)
+
 # [0.0.29]
 - Reenable metadata uris (@razzmatazz)
 - [csharp-ls@0.21.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.21.0). From now on NET 10 SDK is required.
