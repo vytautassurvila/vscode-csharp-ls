@@ -1,6 +1,7 @@
-# Unreleased
+# [0.0.30]
 - Add user setting to enable support for .cshtml (razor) files (@razzmatazz)
 - Add instruction to build and install the extension from source (@razzmatazz)
+- [csharp-ls@0.22.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.22.0)
 
 # [0.0.29]
 - Reenable metadata uris (@razzmatazz)
