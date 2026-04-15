@@ -70,6 +70,18 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Enable (experimental) Razor support in the language server. When enabled, the server will provide language features for .cshtml files."
+				},
+				"csharp-ls.applyFormattingOptions": {
+					"scope": "window",
+					"type": "boolean",
+					"default": false,
+					"description": "Use formatting options as supplied by the editor (may override .editorconfig values)."
+				},
+				"csharp-ls.analyzersEnabled": {
+					"scope": "window",
+					"type": "boolean",
+					"default": false,
+					"description": "Run Roslyn analyzers (e.g. IDE style rules, third-party NuGet analyzers) as part of diagnostics. Note: increases diagnostic latency and CPU usage."
 				}
 			}
 		}
