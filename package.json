@@ -82,6 +82,12 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Run Roslyn analyzers (e.g. IDE style rules, third-party NuGet analyzers) as part of diagnostics. Note: increases diagnostic latency and CPU usage."
+				},
+				"csharp-ls.rpcLog": {
+					"scope": "window",
+					"type": "string",
+					"default": "",
+					"description": "Path to a file where the RPC wire log (READ/WRITE/ERROR messages) will be written (e.g. `~/csharp-ls-rpc.log`). When set, passes `--rpclog <path>` to the csharp-ls binary. Useful for debugging LSP communication issues. Leave empty to disable. Requires a language server restart to take effect."
 				}
 			}
 		}
