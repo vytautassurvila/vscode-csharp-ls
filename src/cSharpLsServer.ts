@@ -153,7 +153,7 @@ async function ensureWeHaveDotnet() {
     }
 
     if (!dotnetVersion) {
-        throw new Error('Failed to get dotnet version. Make sure dotnet is installed and in vscode PATH');
+        throw new Error('Failed to get dotnet version. Make sure dotnet SDK is installed and in vscode PATH');
     }
 
     const dotnetVersionParts = dotnetVersion.split('.');
@@ -163,8 +163,8 @@ async function ensureWeHaveDotnet() {
         throw new Error(`Failed to parse dotnet version: ${dotnetVersion}`);
     }
 
-    if (majorVersion < 8) {
-        throw new Error(`csharp-ls requires dotnet version 8.0 or higher. Current version is ${dotnetVersion}`);
+    if (majorVersion < 10) {
+        throw new Error(`csharp-ls requires dotnet SDK version 10.0 or higher. Current version is ${dotnetVersion}`);
     }
 }
 
