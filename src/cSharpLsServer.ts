@@ -1,5 +1,6 @@
 import { existsSync } from 'fs';
 import * as path from 'path';
+import * as os from 'os';
 import { mkdir } from 'fs/promises';
 import { LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
@@ -32,19 +33,27 @@ export async function startCSharpLsServer(
     const rootPath = slnWorkspaceFolder?.uri.fsPath ?? workspace.rootPath ?? '';
     const relativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
 
-    // Build features flag
-    const features: string[] = [];
+    // Build args array
+    const args: string[] = ['--solution', relativeSolutionPath];
+
     const razorSupport = workspace.getConfiguration('csharp-ls').get('razor-support') as boolean;
     if (razorSupport) {
-        features.push('razor-support');
+        args.push('--features', 'razor-support');
     }
-    const featuresFlag = features.length > 0 ? `--features ${features.join(',')}` : '';
+
+    const rpcLogRaw = workspace.getConfiguration('csharp-ls').get('rpcLog') as string;
+    const rpcLog = rpcLogRaw?.startsWith('~')
+        ? path.join(os.homedir(), rpcLogRaw.slice(1))
+        : rpcLogRaw;
+    if (rpcLog) {
+        args.push('--rpclog', rpcLog);
+    }
 
     const csharpLsExecutable = {
-        command: `${csharpLsBinaryPath} --solution ${relativeSolutionPath} ${featuresFlag}`,
+        command: csharpLsBinaryPath,
+        args,
         options: {
             cwd: rootPath,
-            shell: true,
         },
     };
 
