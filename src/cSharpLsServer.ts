@@ -2,12 +2,13 @@ import { existsSync } from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import { mkdir } from 'fs/promises';
-import { LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
+import { DidChangeConfigurationNotification, LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
-import { ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri, languages } from 'vscode';
+import { Disposable, ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri, languages } from 'vscode';
 import { csharpLsVersion } from './constants/csharpLsVersion';
 
 let client: LanguageClient | undefined = undefined;
+let configChangeListener: Disposable | undefined = undefined;
 
 class MetadataUriFeature implements StaticFeature {
     fillClientCapabilities(capabilities: ClientCapabilities): void {
@@ -66,7 +67,26 @@ export async function startCSharpLsServer(
         documentSelector: [{ scheme: 'file', language: 'csharp' }],
         synchronize: {
             fileEvents: workspace.createFileSystemWatcher('**/.{cs,csproj}')
-        }
+        },
+        middleware: {
+            workspace: {
+                configuration: (params, token, next) => {
+                    return params.items.map(item => {
+                        if (item.section !== 'csharp') {
+                            return next(params, token);
+                        }
+                        const cfg = workspace.getConfiguration('csharp-ls');
+                        return {
+                            applyFormattingOptions: cfg.get<boolean>('applyFormattingOptions', false),
+                            analyzersEnabled: cfg.get<boolean>('analyzersEnabled', false),
+                            razorSupport: true,
+                            useMetadataUris: true,
+                            solutionPathOverride: relativeSolutionPath,
+                        };
+                    });
+                },
+            },
+        },
     };
 
     client = new LanguageClient(
@@ -79,10 +99,22 @@ export async function startCSharpLsServer(
     registerTextDocumentContentProviders();
 
     client.registerFeature(new MetadataUriFeature());
-    client.start();
+    await client.start();
+
+    configChangeListener?.dispose();
+    configChangeListener = workspace.onDidChangeConfiguration(async (e) => {
+        if (e.affectsConfiguration('csharp-ls')) {
+            await client?.sendNotification(DidChangeConfigurationNotification.type, {
+                settings: null,
+            });
+        }
+    });
 }
 
 export async function stopCSharpLsServer(): Promise<void> {
+    configChangeListener?.dispose();
+    configChangeListener = undefined;
+
     if (!client) {
         return;
     }
