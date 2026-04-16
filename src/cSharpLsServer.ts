@@ -82,6 +82,9 @@ export async function startCSharpLsServer(
                             razorSupport: true,
                             useMetadataUris: true,
                             solutionPathOverride: relativeSolutionPath,
+                            debug: {
+                                debugMode: cfg.get<boolean>('debugMode', false),
+                            },
                         };
                     });
                 },
