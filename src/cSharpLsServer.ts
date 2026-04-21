@@ -35,12 +35,10 @@ export async function startCSharpLsServer(
     const relativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
 
     // Build args array
-    const args: string[] = ['--solution', relativeSolutionPath];
-
-    const razorSupport = workspace.getConfiguration('csharp-ls').get('razor-support') as boolean;
-    if (razorSupport) {
-        args.push('--features', 'razor-support');
-    }
+    const args: string[] = [
+        '--solution', relativeSolutionPath,
+        '--features', 'razor-support',
+    ];
 
     const rpcLogRaw = workspace.getConfiguration('csharp-ls').get('rpcLog') as string;
     const rpcLog = rpcLogRaw?.startsWith('~')
@@ -66,7 +64,7 @@ export async function startCSharpLsServer(
     const clientOptions: LanguageClientOptions = {
         documentSelector: [{ scheme: 'file', language: 'csharp' }],
         synchronize: {
-            fileEvents: workspace.createFileSystemWatcher('**/.{cs,csproj}')
+            fileEvents: workspace.createFileSystemWatcher('**/*.{cs,cshtml,csproj}')
         },
         middleware: {
             workspace: {
