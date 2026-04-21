@@ -1,9 +1,10 @@
-# [Unreleased]
+# [0.0.32]
 - Add new configurables: csharp-ls.applyFormattingOptions and .analyzersEnabled (@razzmatazz)
 - Update required .NET SDK version (@razzmatazz)
 - Add configurable for --rpclog (@razzmatazz)
 - Replace razor-support config with middleware-based configuration (@razzmatazz)
 - Add csharp-ls.debugMode setting (@razzmatazz)
+- [csharp-ls@0.24.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.24.0)
 
 # [0.0.31]
 - [csharp-ls@0.23.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.23.0)
