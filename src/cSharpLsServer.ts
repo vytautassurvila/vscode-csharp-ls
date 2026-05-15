@@ -9,6 +9,7 @@ import { csharpLsVersion } from './constants/csharpLsVersion';
 
 let client: LanguageClient | undefined = undefined;
 let configChangeListener: Disposable | undefined = undefined;
+let currentRelativeSolutionPath: string = '';
 
 class MetadataUriFeature implements StaticFeature {
     fillClientCapabilities(capabilities: ClientCapabilities): void {
@@ -32,11 +33,9 @@ export async function startCSharpLsServer(
 
     const slnWorkspaceFolder = workspace.workspaceFolders?.find(f => solutionPath.startsWith(f.uri.fsPath));
     const rootPath = slnWorkspaceFolder?.uri.fsPath ?? workspace.rootPath ?? '';
-    const relativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
+    currentRelativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
 
-    // Build args array
     const args: string[] = [
-        '--solution', relativeSolutionPath,
         '--features', 'razor-support',
     ];
 
@@ -79,7 +78,7 @@ export async function startCSharpLsServer(
                             analyzersEnabled: cfg.get<boolean>('analyzersEnabled', false),
                             razorSupport: true,
                             useMetadataUris: true,
-                            solutionPathOverride: relativeSolutionPath,
+                            solutionPathOverride: currentRelativeSolutionPath,
                             debug: {
                                 debugMode: cfg.get<boolean>('debugMode', false),
                             },
@@ -122,6 +121,18 @@ export async function stopCSharpLsServer(): Promise<void> {
 
     await client.stop();
     client = undefined;
+}
+
+export async function changeCSharpLsSolution(solutionPath: string): Promise<void> {
+    if (!client) {
+        return;
+    }
+
+    const slnWorkspaceFolder = workspace.workspaceFolders?.find(f => solutionPath.startsWith(f.uri.fsPath));
+    const rootPath = slnWorkspaceFolder?.uri.fsPath ?? workspace.rootPath ?? '';
+    currentRelativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
+
+    await client.sendNotification(DidChangeConfigurationNotification.type, { settings: null });
 }
 
 export async function getTargetSolutionPaths(): Promise<string[]> {
