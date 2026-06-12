@@ -1,3 +1,7 @@
+# [0.0.33]
+- Switch solution via didChangeConfiguration instead of server restart (@razzmatazz)
+- [csharp-ls@0.25.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.25.0)
+
 # [0.0.32]
 - Add new configurables: csharp-ls.applyFormattingOptions and .analyzersEnabled (@razzmatazz)
 - Update required .NET SDK version (@razzmatazz)
