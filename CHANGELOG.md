@@ -1,3 +1,6 @@
+# [0.0.34]
+- [csharp-ls@0.26.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.26.0)
+
 # [0.0.33]
 - Switch solution via didChangeConfiguration instead of server restart (@razzmatazz)
 - [csharp-ls@0.25.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.25.0)
