@@ -137,7 +137,7 @@ export async function changeCSharpLsSolution(solutionPath: string): Promise<void
 
 export async function getTargetSolutionPaths(): Promise<string[]> {
     const solutionFiles = await workspace.findFiles(
-        '{**/*.sln}',
+        '{**/*.sln,**/*.slnx}',
         '{**/node_modules/**,**/.git/**}');
 
     return solutionFiles.map(f => f.path);

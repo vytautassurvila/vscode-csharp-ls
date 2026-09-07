@@ -18,7 +18,7 @@
 	],
 	"activationEvents": [
 		"onCommand: csharp-ls.selectSolution",
-		"workspaceContains:**/*.{sln}",
+		"workspaceContains:**/*.{sln,slnx}",
 		"onLanguage:csharp"
 	],
 	"main": "./out/extension.js",

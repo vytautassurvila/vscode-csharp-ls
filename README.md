@@ -16,7 +16,7 @@ This extension requires that the .NET 10 (or greater) SDK be installed and on pa
 
 ## Usage
 
-If opened folder contains single Solution (.sln) file the language server will be launched automatically. In case you have more than one solution files then on first launch you should see prompt asking which solution file to use. Later solution can be changed with command `csharp-ls: Select solution or project`.
+If opened folder contains single Solution (.sln or .slnx) file the language server will be launched automatically. In case you have more than one solution files then on first launch you should see prompt asking which solution file to use. Later solution can be changed with command `csharp-ls: Select solution or project`.
 
 ## Extension Settings
 
