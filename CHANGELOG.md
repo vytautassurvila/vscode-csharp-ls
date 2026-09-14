@@ -1,3 +1,6 @@
+# [0.0.36]
+- [csharp-ls@0.28.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.28.0)
+
 # [0.0.35]
 - activate extension when workspace contains slnx files too
 - [csharp-ls@0.27.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.27.0)
