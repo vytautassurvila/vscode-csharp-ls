@@ -1,3 +1,6 @@
+# unreleased
+- bind language client to workspace folder - fixes crash in workspaces with multiple folders
+
 # [0.0.36]
 - [csharp-ls@0.28.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.28.0)
 

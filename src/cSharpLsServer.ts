@@ -61,6 +61,7 @@ export async function startCSharpLsServer(
     };
 
     const clientOptions: LanguageClientOptions = {
+        workspaceFolder: slnWorkspaceFolder,
         documentSelector: [{ scheme: 'file', language: 'csharp' }],
         synchronize: {
             fileEvents: workspace.createFileSystemWatcher('**/*.{cs,cshtml,csproj}')
