@@ -1,5 +1,6 @@
 # unreleased
 - bind language client to workspace folder - fixes crash in workspaces with multiple folders
+- pass settings via `initializationOptions` instead of `--features` CLI argument
 - [csharp-ls@0.29.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.29.0)
 
 # [0.0.36]
