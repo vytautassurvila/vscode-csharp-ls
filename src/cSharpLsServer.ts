@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import { mkdir } from 'fs/promises';
-import { DidChangeConfigurationNotification, LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
+import { ClientCapabilities, DidChangeConfigurationNotification, FeatureState, LanguageClient, LanguageClientOptions, ServerOptions, StaticFeature } from 'vscode-languageclient/node';
 import { ChildProcess, spawn } from 'child_process';
 import { Disposable, ExtensionContext, workspace, window, commands, TextDocumentContentProvider, Uri, languages } from 'vscode';
 import { csharpLsVersion } from './constants/csharpLsVersion';
@@ -16,6 +16,9 @@ class MetadataUriFeature implements StaticFeature {
         capabilities.experimental = capabilities.experimental || {};
         capabilities.experimental.csharp = capabilities.experimental.csharp || {};
         capabilities.experimental.csharp.metadataUris = true;
+    }
+    getState(): FeatureState {
+        return { kind: 'static' };
     }
     initialize(): void {}
     dispose(): void {}
@@ -35,9 +38,7 @@ export async function startCSharpLsServer(
     const rootPath = slnWorkspaceFolder?.uri.fsPath ?? workspace.rootPath ?? '';
     currentRelativeSolutionPath = solutionPath.replace(rootPath, '').replace(/^[\/\\]/, '');
 
-    const args: string[] = [
-        '--features', 'razor-support',
-    ];
+    const args: string[] = [];
 
     const rpcLogRaw = workspace.getConfiguration('csharp-ls').get('rpcLog') as string;
     const rpcLog = rpcLogRaw?.startsWith('~')
@@ -63,6 +64,7 @@ export async function startCSharpLsServer(
     const clientOptions: LanguageClientOptions = {
         workspaceFolder: slnWorkspaceFolder,
         documentSelector: [{ scheme: 'file', language: 'csharp' }],
+        initializationOptions: { csharp: buildCSharpConfig() },
         synchronize: {
             fileEvents: workspace.createFileSystemWatcher('**/*.{cs,cshtml,csproj}')
         },
@@ -73,17 +75,7 @@ export async function startCSharpLsServer(
                         if (item.section !== 'csharp') {
                             return next(params, token);
                         }
-                        const cfg = workspace.getConfiguration('csharp-ls');
-                        return {
-                            applyFormattingOptions: cfg.get<boolean>('applyFormattingOptions', false),
-                            analyzersEnabled: cfg.get<boolean>('analyzersEnabled', false),
-                            razorSupport: true,
-                            useMetadataUris: true,
-                            solutionPathOverride: currentRelativeSolutionPath,
-                            debug: {
-                                debugMode: cfg.get<boolean>('debugMode', false),
-                            },
-                        };
+                        return buildCSharpConfig();
                     });
                 },
             },
@@ -110,6 +102,20 @@ export async function startCSharpLsServer(
             });
         }
     });
+}
+
+function buildCSharpConfig() {
+    const cfg = workspace.getConfiguration('csharp-ls');
+    return {
+        applyFormattingOptions: cfg.get<boolean>('applyFormattingOptions', false),
+        analyzersEnabled: cfg.get<boolean>('analyzersEnabled', false),
+        razorSupport: true,
+        useMetadataUris: true,
+        solutionPathOverride: currentRelativeSolutionPath,
+        debug: {
+            debugMode: cfg.get<boolean>('debugMode', false),
+        },
+    };
 }
 
 export async function stopCSharpLsServer(): Promise<void> {
