@@ -12,7 +12,7 @@ See [csharp-language-server Features](https://github.com/razzmatazz/csharp-langu
 
 ## Requirements
 
-This extension requires that the .NET 10 (or greater) SDK be installed and on path for Visual Studio Code.
+This extension requires that the .NET 11 (or greater) SDK be installed and on path for Visual Studio Code.
 
 ## Usage
 

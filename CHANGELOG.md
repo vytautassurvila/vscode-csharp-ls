@@ -1,7 +1,7 @@
 # unreleased
 - bind language client to workspace folder - fixes crash in workspaces with multiple folders
-- pass settings via `initializationOptions` instead of `--features` CLI argument
-- [csharp-ls@0.29.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.29.0)
+- pass settings via `initializationOptions` instead of `--features` CLI argument (@razzmatazz)
+- [csharp-ls@0.29.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.29.0). From now on NET 11 SDK is required.
 
 # [0.0.36]
 - [csharp-ls@0.28.0](https://github.com/razzmatazz/csharp-language-server/releases/tag/0.28.0)
